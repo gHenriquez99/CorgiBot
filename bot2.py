@@ -63,7 +63,7 @@ def main():
             print("-----------------------------------------------")
             print("*** Getting seubmission from Reddit ***")
             content = submission.title
-            content = content + ' @gusHenriquez99'
+            content = content + ' @TheNamedEmma'
             url = submission.url  
             if 'jpg' in url or 'png' in url:
                 getImage(url)
@@ -74,7 +74,6 @@ def main():
             else: 
                 print('*** No image found ***')
 
-if __name__ == "__main__":
-    main()
+main()
 
         
