@@ -63,7 +63,7 @@ def main():
             print("-----------------------------------------------")
             print("*** Getting seubmission from Reddit ***")
             content = submission.title
-            content = content + ' @TheNamedEmma'
+            content = '"' + content + '"' + ' @TheNamedEmma'
             url = submission.url  
             if 'jpg' in url or 'png' in url:
                 getImage(url)
