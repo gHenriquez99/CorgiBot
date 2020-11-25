@@ -1,8 +1,47 @@
 import tweepy
-import config 
-import time 
-import requests 
-import praw 
+import config
+import time
+import requests
+import praw
+import random
+
+
+def main():
+    reddit = loginToReddit()
+    num = random.randint(1, 2)
+    if num == 1:
+        for submission in reddit.subreddit("corgi").hot(limit=10):
+            if submission.stickied == False:
+                print("-----------------------------------------------")
+                print("*** Getting submission from Reddit ***")
+                content = submission.title
+                content = '"' + content + '"' + ' @TheNamedEmma'
+                url = submission.url
+                if 'jpg' in url or 'png' in url:
+                    getImage(url)
+                    postTweet(content)
+                    print('Tweet has been posted!')
+                    time.sleep(20)
+                    break
+                else:
+                    print('*** No image found ***')
+    else:
+        for submission in reddit.subreddit("IndoorGarden").hot(limit=10):
+            if submission.stickied == False:
+                print("-----------------------------------------------")
+                print("*** Getting submission from Reddit ***")
+                content = submission.title
+                content = '"' + content + '"' + ' @TheNamedEmma'
+                url = submission.url
+                if 'jpg' in url or 'png' in url:
+                    getImage(url)
+                    postTweet(content)
+                    print('Tweet has been posted!')
+                    time.sleep(20)
+                    break
+                else:
+                    print('*** No image found ***')
+
 
 def loginToReddit():
     try:
@@ -22,6 +61,7 @@ def loginToReddit():
         print('*** Login failed ***')
         print('-----------------------------------------------')
 
+
 def getImage(url):
     try:
         print("-----------------------------------------------")
@@ -35,45 +75,27 @@ def getImage(url):
         print('*** Unable to download image ***')
         print("-----------------------------------------------")
 
+
 def postTweet(content):
     try:
         print("-----------------------------------------------")
         print('*** Logging into twitter ***')
         auth = tweepy.OAuthHandler(config.consumer_key, config.consumer_secret)
-        auth.set_access_token(config.key,config.secret)
+        auth.set_access_token(config.key, config.secret)
 
-        api=tweepy.API(auth)
+        api = tweepy.API(auth)
         print('*** Twitter login successful ***')
 
-        tweet = content 
+        tweet = content
         image_path = 'img.jpg'
 
         print('*** Posting on Twitter ***')
         api.update_with_media(image_path, tweet)
         print("*** Successfully posted ***")
         print("-----------------------------------------------")
-    except: 
+    except:
         print('Something went wrong while trying to post tweet')
         print("-----------------------------------------------")
 
-def main():
-    reddit = loginToReddit()
-    for submission in reddit.subreddit("corgi").hot(limit=10):
-        if submission.stickied == False:
-            print("-----------------------------------------------")
-            print("*** Getting seubmission from Reddit ***")
-            content = submission.title
-            content = '"' + content + '"' + ' @TheNamedEmma'
-            url = submission.url  
-            if 'jpg' in url or 'png' in url:
-                getImage(url)
-                postTweet(content)
-                print('Tweet has been posted!')
-                time.sleep(20)
-                break
-            else: 
-                print('*** No image found ***')
 
 main()
-
-        
